@@ -6,13 +6,24 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 
 
-
+/**
+ * Servlet implementation class RegisterServlet
+ * @author Isaac-1-lang
+ * @version 1.0
+ * @date 2026-01-08
+ */
 public class RegisterServlet extends HttpServlet {
+  /**
+   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+   */
   @Override
   protected void doGet(HttpServletRequest request,HttpServletResponse response) 
       throws ServletException,IOException {
         request.getRequestDispatcher("/register.jsp").forward(request,response);
       }
+      /**
+       * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+       */
       @Override
       protected void doPost(HttpServletRequest request,HttpServletResponse response) 
          throws ServletException,IOException {
