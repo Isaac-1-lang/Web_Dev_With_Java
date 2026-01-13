@@ -21,6 +21,7 @@ public class Student {
     private String name;
     @Column(name = "email", unique = true, nullable = false, length = 100)
     private String email;
+    @Column(name="school",nullable = false,length = 100)
     private String school;
     private int age;
     public Student() {

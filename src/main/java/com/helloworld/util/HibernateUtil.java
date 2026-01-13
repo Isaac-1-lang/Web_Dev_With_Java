@@ -57,7 +57,16 @@ public class HibernateUtil {
         settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
 
         settings.put(Environment.SHOW_SQL, true);
-        settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+        // Creates tables if they don't exits
+        settings.put(Environment.HBM2DDL_AUTO, "update");
+        // settings.put(Environment.HBM2DDL_AUTO,"create");// 
+        // settings.put(Environment.HBM2DDL_AUTO,"create-drop");//Creates tables if they don't exits and drops them if the session is closed
+        // settings.put(Environment.HBM2DDL_AUTO,"validate");//Validates the schema, making sure that the current state of the mapped entity is compatible with the physical database structure
+        // settings.put(Environment.HBM2DDL_AUTO,"none");//No DDL is generated
+        // settings.put(Environment.HBM2DDL_AUTO,"update");//Updates the schema, making sure that the current state of the mapped entity is compatible with the physical database structure
+        // settings.put(Environment.HBM2DDL_AUTO,"create-drop");//Creates tables if they don't exits and drops them if the session is closed
+        // settings.put(Environment.HBM2DDL_AUTO,"validate");//Validates the schema, making sure that the current state of the mapped entity is compatible with the physical database structure
+        // settings.put(Environment.HBM2DDL_AUTO,"none");//No DDL is generated
         return settings;
     }
 }
