@@ -1,19 +1,12 @@
 package com.helloworld.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+/**
+ * A class which helps to create a model for the data for a student in the database table.
+ */
 @Entity
 public class Student {
-    @Id
-    private int id;
-    private String name;
-    private String email;
-    private String school;
-    private int age;
-    public Student() {
-
-    }
     /**
      * @param id
      * @param name
@@ -21,6 +14,19 @@ public class Student {
      * @param school
      * @param age
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "fName", nullable = false, length = 100)
+    private String name;
+    @Column(name = "email", unique = true, nullable = false, length = 100)
+    private String email;
+    private String school;
+    private int age;
+    public Student() {
+
+    }
+
     public Student(int id, String name, String email, String school, int age) {
         super();
         this.id = id;
@@ -29,12 +35,6 @@ public class Student {
         this.school = school;
         this.age = age;
     }
-    /**
-     * @param name
-     * @param email
-     * @param school
-     * @param age
-     */
     public Student(String name, String email, String school, int age) {
         this.name = name;
         this.email = email;
