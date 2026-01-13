@@ -1,4 +1,4 @@
-package com.helloWorld;
+package com.helloworld;
 
 
 import jakarta.servlet.*;

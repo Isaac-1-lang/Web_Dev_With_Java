@@ -1,3 +1,3 @@
-package com.helloWorld;
+package com.helloworld;
 
 

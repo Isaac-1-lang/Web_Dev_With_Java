@@ -1,25 +1,17 @@
-package com.helloWorld;
+package com.helloworld;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class HelloWorldServlet extends HttpServlet {
-    
-    private int visitCount = 0;
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
-        
-        // Get user agent for personalization
-        String userAgent = req.getHeader("User-Agent");
-        String browser = detectBrowser(userAgent);
         
         try (PrintWriter out = resp.getWriter()) {
             String html = """
@@ -56,25 +48,5 @@ public class HelloWorldServlet extends HttpServlet {
             """;
             out.println(html);
         }
-    }
-    
-    private String detectBrowser(String userAgent) {
-        if (userAgent == null) {
-            return "Unknown Browser";
-        }
-        
-        if (userAgent.contains("Edg")) {
-            return "Microsoft Edge";
-        } else if (userAgent.contains("Chrome")) {
-            return "Google Chrome";
-        } else if (userAgent.contains("Firefox")) {
-            return "Mozilla Firefox";
-        } else if (userAgent.contains("Safari") && !userAgent.contains("Chrome")) {
-            return "Safari";
-        } else if (userAgent.contains("Opera") || userAgent.contains("OPR")) {
-            return "Opera";
-        }
-        
-        return "Unknown Browser";
     }
 }

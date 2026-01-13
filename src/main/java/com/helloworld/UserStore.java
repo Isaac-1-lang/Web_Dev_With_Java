@@ -1,4 +1,4 @@
-package com.helloWorld;
+package com.helloworld;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
