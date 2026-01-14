@@ -5,19 +5,19 @@
          version="6.0">
 
     <servlet>
-        <servlet-name>HelloWorld</servlet-name>
-        <servlet-class>com.helloWorld.HelloWorldServlet</servlet-class>
+        <servlet-name>Helloworld</servlet-name>
+        <servlet-class>com.helloworld.HelloWorldServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>HelloWorld</servlet-name>
+        <servlet-name>Helloworld</servlet-name>
         <url-pattern>/hello</url-pattern>
     </servlet-mapping>
 
 
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>com.helloWorld.LoginServlet</servlet-class>
+        <servlet-class>com.helloworld.LoginServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -27,7 +27,7 @@
 
     <servlet>
         <servlet-name>Register</servlet-name>
-        <servlet-class>com.helloWorld.RegisterServlet</servlet-class>
+        <servlet-class>com.helloworld.RegisterServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -37,7 +37,7 @@
 
     <servlet>
         <servlet-name>Dashboard</servlet-name>
-        <servlet-class>com.helloWorld.DashboardServlet</servlet-class>
+        <servlet-class>com.helloworld.DashboardServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

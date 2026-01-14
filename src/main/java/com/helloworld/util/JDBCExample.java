@@ -3,6 +3,12 @@ package com.helloworld.util;
 
 
 import java.sql.*;
+
+/**
+ * Java Database Connectivity version for Hibernate ORM framework
+ * @author Isaac-1-lang
+ *
+ */
 public class JDBCExample {
     public static void  main(String[] args) {
         String url = "jdbc:postgredsql://localhost:5432/users_servlets";
@@ -11,12 +17,17 @@ public class JDBCExample {
 
 
         try {
+            /**
+             * Creation or calling of the drivers which help in connection to the Database
+             */
             Class.forName("org.postgresql.Driver");
-
+            // Managing the DB connection
             Connection conn  = DriverManager.getConnection(url,user,password);
+            System.out.println(conn.getAutoCommit());
             String sql  = "SELECT * FROM student";
-
+            // Executing Queries to the DB's tables
             PreparedStatement stmt = conn.prepareStatement(sql);
+            // Storing and controlling the results which are fetched from the DB's table before being rendered or doing something else on them!!!
             ResultSet rs = stmt.executeQuery();
 
 
