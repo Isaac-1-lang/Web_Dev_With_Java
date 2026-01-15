@@ -3,7 +3,7 @@ package com.helloworld.model;
 public class CustomerModel {
   private int id;
   private String fullName;
-  private int Order_Id;
+  private int orderId;
 
 
   public int  getId() {
@@ -21,9 +21,9 @@ public class CustomerModel {
     this.fullName=fullName;
   }
   public int getOrderId() {
-    return Order_Id;
+    return orderId;
   }
   public void setOrder_id(int order_id) {
-    this.Order_Id=order_id;
+    this.orderId=order_id;
   }
  }

@@ -55,14 +55,4 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
-
-    <servlet>
-    <servlet-name>secondDashboard</servlet-name>
-    <servlet-class>com.helloworld.SecondDashboardServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>secondDashboard</servlet-name>
-        <url-pattern>/secondDashboard</url-pattern>
-    </servlet-mapping>
-
 </web-app>
