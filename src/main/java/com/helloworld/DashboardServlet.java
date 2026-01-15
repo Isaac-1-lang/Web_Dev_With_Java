@@ -3,6 +3,12 @@ package com.helloworld;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import com.helloworld.model.CustomerModel;
 
 /**
  * Servlet implementation class DashboardServlet
@@ -85,6 +91,23 @@ public class DashboardServlet extends HttpServlet {
         // session.getMaxInactiveInterval() - get timeout in seconds
         // session.setMaxInactiveInterval(seconds) - set timeout
         // session.isNew() - check if session was just created
+        //  Select the customers from the database and display them in a table
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT Id,Fullname,Order_Id FROM customers");
+            List<CustomerModel> customers = new ArrayList<>();
+            while(rs.next()) {
+                CustomerModel c = new CustomerModel();
+                c.setId(rs.getInt("Id"));
+                c.setFullName(rs.getString("Fullname"));
+                c.setOrder_id(rs.getInt("Order_Id"));
+                customers.add(c);
+            }
+        request.setAttribute("customers", customers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
     }
