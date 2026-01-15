@@ -37,9 +37,11 @@
   <div class="container">
     <div class="card">
       <h2>Login</h2>
-      <c:if test="${not empty error}">
-        <p class="error">${error}</p>
-      </c:if>
+      <!-- Using pure Java instead of JSP tags, JSTL and EL expressions -->
+      <% String error = (String) request.getAttribute("error"); %>
+      <% if (error != null && !error.isEmpty()) { %>
+        <p class="error"><%= error %></p>
+      <% } %>
       <form method="post">
         <div>
           <label for="username">Username</label>
