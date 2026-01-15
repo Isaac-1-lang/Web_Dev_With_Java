@@ -49,19 +49,44 @@ public class LoginServlet extends HttpServlet {
 
         if(username == null || password == null || username.isEmpty() || password.isEmpty()) {
             request.setAttribute("error", "Username and password are required");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
             // Fetch from the database if the username and password are correct
-            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+            String sql = "SELECT * FROM users WHERE fullname = ? AND password = ?";
+
             try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement st = conn.prepareStatement(sql);
-                ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    request.setAttribute("error", "Invalid username or password");
-                } else {
-                    request.setAttribute("error", "Invalid username or password");
+                 PreparedStatement st = conn.prepareStatement(sql)) {
+
+                st.setString(1, username);
+                st.setString(2, password);
+
+                try (ResultSet rs = st.executeQuery()) {   // executeQuery only here
+                    if (rs.next()) {
+                        // ---------- SUCCESSFUL LOGIN ----------
+                        // 1) Create session and store user info (used by DashboardServlet)
+                        HttpSession session = request.getSession();
+                        session.setAttribute("user", username);
+
+                        // 2) (Optional) create a simple \"rememberedUsername\" cookie
+                        Cookie usernameCookie = new Cookie("rememberedUsername", username);
+                        usernameCookie.setMaxAge(60 * 60 * 24 * 7); // 7 days
+                        usernameCookie.setPath("/");
+                        response.addCookie(usernameCookie);
+
+                        // 3) Redirect to dashboard
+                        response.sendRedirect(request.getContextPath() + "/dashboard");
+                        return;
+                    } else {
+                        request.setAttribute("error", "Invalid username or password");
+                        request.getRequestDispatcher("/login.jsp").forward(request, response);
+                        return;
+                    }
                 }
             } catch (Exception e) {
                 request.setAttribute("error", "Database error: " + e.getMessage());
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
             }
         }
     }
-}

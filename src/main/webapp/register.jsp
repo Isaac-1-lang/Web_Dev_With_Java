@@ -182,13 +182,21 @@
       <h2>Create Account</h2>
       <p class="subtitle">Join us today and get started</p>
       
-      <!-- These would be dynamically rendered by your server -->
-      <!-- <c:if test="${not empty error}">
-        <p class="error">${error}</p>
-      </c:if>
-      <c:if test="${not empty success}">
-        <p class="success">${success}</p>
-      </c:if> -->
+      <!-- Server-rendered messages (no JSTL needed) -->
+      <%
+        String error = (String) request.getAttribute("error");
+        String success = (String) request.getAttribute("success");
+        if (error != null) {
+      %>
+        <div class="error"><%= error %></div>
+      <%
+        }
+        if (success != null) {
+      %>
+        <div class="success"><%= success %></div>
+      <%
+        }
+      %>
       
       <form method="post">
         <div class="input-group">

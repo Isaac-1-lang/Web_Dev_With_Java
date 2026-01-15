@@ -5,7 +5,6 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
 
@@ -30,28 +29,44 @@ public class RegisterServlet extends HttpServlet {
       @Override
       protected void doPost(HttpServletRequest request,HttpServletResponse response) 
          throws ServletException,IOException {
-          String username=request.getParameter("username");
+          String username = request.getParameter("username");
           String password = request.getParameter("password");
-          String email   = request.getParameter("email");
-          String phone  = request.getParameter("phone");
-          if(username==null || password==null || username.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty()) {
-            request.setAttribute("error","Username or password can't be empty");
-            request.getRequestDispatcher("/register.jsp").forward(request,response);
-            String sql  = "INSERT INTO users(Id,fullname,code,email) VALUES (?,?,?,?)";
-            try (Connection conn  = DatabaseConnection.getConnection();
-            PreparedStatement st  = conn.prepareStatement(sql); ResultSet rs  = st.executeQuery()) {
-              st.setString(1, username);
-              st.setString(2, password);
+          String email = request.getParameter("email");
+          String phone = request.getParameter("phone");
+
+          // Basic validation
+          if (username == null || password == null || email == null || phone == null
+                  || username.isBlank() || password.isBlank() || email.isBlank() || phone.isBlank()) {
+              request.setAttribute("error", "All fields are required.");
+              request.getRequestDispatcher("/register.jsp").forward(request, response);
+              return;
+          }
+
+          // IMPORTANT: Update these column names to match your real database schema.
+          // This version assumes your table has columns: fullname, code, email, phone
+          // and that id is auto-generated (SERIAL/IDENTITY).
+          String sql = "INSERT INTO users(fullname, password, email, phone) VALUES (?,?,?,?)";
+
+          try (Connection conn = DatabaseConnection.getConnection();
+               PreparedStatement st = conn.prepareStatement(sql)) {
+
+              // Set parameters BEFORE executing
+              st.setString(1, username); // fullname (or username)
+              st.setString(2, password); // code (your password column; in real apps hash passwords!)
               st.setString(3, email);
               st.setString(4, phone);
-              st.executeUpdate();
-              System.out.println("User registered successfully");
-              response.sendRedirect(request.getContextPath()+"/login");
-            } catch (Exception e) {
-              e.printStackTrace();
-            } finally {
-              System.out.println("Finally the app ends withoutt clearing the results");
+
+              int rows = st.executeUpdate(); // use executeUpdate() for INSERT/UPDATE/DELETE
+              if (rows > 0) {
+                  response.sendRedirect(request.getContextPath() + "/dashboard");
+              } else {
+                  request.setAttribute("error", "Registration failed. No rows inserted.");
+                  request.getRequestDispatcher("/register.jsp").forward(request, response);
+              }
+          } catch (Exception e) {
+              // Show the error on the page so you don't get a \"blank\" reload
+              request.setAttribute("error", "Registration failed: " + e.getMessage());
+              request.getRequestDispatcher("/register.jsp").forward(request, response);
           }
-          }
-        }
       }
+}
