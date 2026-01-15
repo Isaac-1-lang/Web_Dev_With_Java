@@ -8,7 +8,9 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.helloworld.model.CustomerModel;
+import com.helloworld.dao.CustomerDAO;
 
 /**
  * Servlet implementation class DashboardServlet
@@ -97,12 +99,18 @@ public class DashboardServlet extends HttpServlet {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT Id,Fullname,Order_Id FROM customers");
             List<CustomerModel> customers = new ArrayList<>();
+            CustomerDAO dao  = new CustomerDAO();
+            
+            // Update the customer
             while(rs.next()) {
                 CustomerModel c = new CustomerModel();
                 c.setId(rs.getInt("Id"));
                 c.setFullName(rs.getString("Fullname"));
                 c.setOrder_id(rs.getInt("Order_Id"));
                 customers.add(c);
+                int id = Integer.parseInt(request.getParameter("id"));
+                dao.deleteCustomer(id);
+                c.setId(id);
             }
         request.setAttribute("customers", customers);
         } catch (Exception e) {
@@ -110,5 +118,15 @@ public class DashboardServlet extends HttpServlet {
         }
         
         request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
+    }
+    protected void doPost(HttpServletRequest request,HttpServletResponse response) {
+
+
+    }
+    protected void doPut(HttpServletRequest request,HttpServletResponse response) {
+
+    }
+    protected void doDelete(HttpServletRequest request,HttpServletResponse response) {
+        
     }
 }
