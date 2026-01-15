@@ -4,6 +4,33 @@
   <title>Login</title>
   <link rel="stylesheet" href="css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: black;
+    }
+    .footer-text {
+      color: black;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+    .footer-text a {
+      color: black;
+    }
+    .footer-text a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+    input[type="submit"] {
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+  </style>
 </head>
 
 <body>
@@ -25,7 +52,7 @@
         <input type="submit" value="Login">
       </form>
       <div class="mt-4 text-center">
-        <p>Don't have an account? <a href="register">Register</a></p>
+        <p class="footer-text">Don't have an account? <a href="register">Register</a></p>
       </div>
     </div>
   </div>
