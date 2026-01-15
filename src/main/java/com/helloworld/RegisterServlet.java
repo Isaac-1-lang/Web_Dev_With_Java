@@ -4,6 +4,9 @@ package com.helloworld;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 
 
 /**
@@ -29,17 +32,26 @@ public class RegisterServlet extends HttpServlet {
          throws ServletException,IOException {
           String username=request.getParameter("username");
           String password = request.getParameter("password");
-          if(username==null || password==null || username.isEmpty() || password.isEmpty()) {
+          String email   = request.getParameter("email");
+          String phone  = request.getParameter("phone");
+          if(username==null || password==null || username.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty()) {
             request.setAttribute("error","Username or password can't be empty");
             request.getRequestDispatcher("/register.jsp").forward(request,response);
-            return;
+            String sql  = "INSERT INTO users(Id,fullname,code,email) VALUES (?,?,?,?)";
+            try (Connection conn  = DatabaseConnection.getConnection();
+            PreparedStatement st  = conn.prepareStatement(sql); ResultSet rs  = st.executeQuery()) {
+              st.setString(1, username);
+              st.setString(2, password);
+              st.setString(3, email);
+              st.setString(4, phone);
+              st.executeUpdate();
+              System.out.println("User registered successfully");
+              response.sendRedirect(request.getContextPath()+"/login");
+            } catch (Exception e) {
+              e.printStackTrace();
+            } finally {
+              System.out.println("Finally the app ends withoutt clearing the results");
           }
-          boolean added = UserStore.addUser(new User(username,password));
-          if(added) {
-            response.sendRedirect(request.getContextPath()+"/login");
-          } else {
-            request.setAttribute("error","Username already exists");
-            request.getRequestDispatcher("/register.jsp").forward(request,response);
           }
         }
       }

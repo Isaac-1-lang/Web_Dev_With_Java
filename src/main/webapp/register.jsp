@@ -19,8 +19,16 @@
           <input type="text" id="username" name="username" placeholder="Choose a username" required>
         </div>
         <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="isaprecieux112@gmail.com" required class="email">
+        </div>
+        <div>
           <label for="password">Password</label>
           <input type="password" id="password" name="password" placeholder="Choose a secure password" required>
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input type="phone" id="phone" name="phone" placeholder="250 7XXXXXXXX" required>
         </div>
         <input type="submit" value="Register">
       </form>
