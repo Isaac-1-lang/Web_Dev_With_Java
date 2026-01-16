@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
                         usernameCookie.setMaxAge(60 * 60 * 24 * 7); // 7 days
                         usernameCookie.setPath("/");
                         response.addCookie(usernameCookie);
-
+                        request.setAttribute(username, conn);
                         // 3) Redirect to dashboard
                         response.sendRedirect(request.getContextPath() + "/dashboard");
                         return;
