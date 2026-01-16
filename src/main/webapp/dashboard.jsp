@@ -142,6 +142,38 @@
   </main> -->
   <main>
     <div class="container">
+      <!-- Success/Error Messages -->
+      <c:if test="${not empty success}">
+        <div style="padding: 12px 16px; background: #d1fae5; color: #065f46; border-radius: 6px; margin-bottom: 20px;">
+          ${success}
+        </div>
+      </c:if>
+      <c:if test="${not empty error}">
+        <div style="padding: 12px 16px; background: #fee2e2; color: #991b1b; border-radius: 6px; margin-bottom: 20px;">
+          ${error}
+        </div>
+      </c:if>
+
+      <!-- Add New Customer Form -->
+      <div style="background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
+        <h3 style="margin-top: 0; margin-bottom: 20px;">Add New Customer</h3>
+        <form method="POST" action="dashboard" style="display: flex; gap: 10px; align-items: flex-end;">
+          <div style="flex: 1;">
+            <label for="fullName" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required 
+                   style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
+          </div>
+          <div style="flex: 1;">
+            <label for="orderId" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Order ID</label>
+            <input type="number" id="orderId" name="orderId" required 
+                   style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
+          </div>
+          <div>
+            <button type="submit" class="btn btn-edit" style="padding: 10px 20px; margin: 0;">Add Customer</button>
+          </div>
+        </form>
+      </div>
+
       <!-- Table displaying the data from customer table -->
       <table class="data-table">
         <thead>
