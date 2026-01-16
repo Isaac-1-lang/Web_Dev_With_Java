@@ -64,6 +64,18 @@ public class LoginServlet extends HttpServlet {
 
                 try (ResultSet rs = st.executeQuery()) {   // executeQuery only here
                     if (rs.next()) {
+                        // Check if email is verified
+                        boolean isVerified = rs.getBoolean("is_verified");
+                        
+                        if (!isVerified) {
+                            // Email not verified - redirect to verification page
+                            String email = rs.getString("email");
+                            request.setAttribute("error", "Please verify your email address before logging in.");
+                            request.setAttribute("email", email);
+                            response.sendRedirect(request.getContextPath() + "/verifyCode?email=" + email);
+                            return;
+                        }
+                        
                         // ---------- SUCCESSFUL LOGIN ----------
                         // 1) Create session and store user info (used by DashboardServlet)
                         HttpSession session = request.getSession();

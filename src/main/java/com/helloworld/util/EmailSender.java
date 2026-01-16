@@ -14,8 +14,8 @@ import jakarta.mail.internet.MimeMessage;
 public class EmailSender {
 
     // Email credentials (move to config in real apps)
-    private static final String FROM_EMAIL = "isapreciex112@gmail.com";
-    private static final String APP_PASSWORD = "hudb xyef wgmu irbo";
+    private static final String FROM_EMAIL = "izerejoshua94@gmail.com";
+    private static final String APP_PASSWORD = "lfkb sgdn lsjq ttnr";
 
     public static void sendEmail(String toEmail, String subject, String body) {
 

@@ -75,4 +75,14 @@
         <url-pattern>/delete</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>VerifyCode</servlet-name>
+        <servlet-class>com.helloworld.VerifyCodeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>VerifyCode</servlet-name>
+        <url-pattern>/verifyCode</url-pattern>
+    </servlet-mapping>
+
 </web-app>
