@@ -51,7 +51,8 @@ public class VerifyCodeServlet extends HttpServlet {
         
         try {
             // Check if the code matches for this email
-            String sql = "SELECT id, fullname FROM users WHERE email = ? AND verification_code = ?";
+            // Use email to identify the user since we don't know the exact primary key column name
+            String sql = "SELECT fullname FROM users WHERE email = ? AND verification_code = ?";
             
             try (Connection conn = DatabaseConnection.getConnection();
                  PreparedStatement st = conn.prepareStatement(sql)) {
@@ -61,25 +62,24 @@ public class VerifyCodeServlet extends HttpServlet {
                 
                 try (ResultSet rs = st.executeQuery()) {
                     if (rs.next()) {
-                        // Code is correct - update is_Verified to true
-                        int userId = rs.getInt("id");
+                        // Code is correct - get username
                         String username = rs.getString("fullname");
                         
-                        // Update verification status
-                        String updateSql = "UPDATE users SET is_verified = true WHERE id = ?";
+                        // Update verification status using email (more reliable than id)
+                        String updateSql = "UPDATE users SET is_verified = true WHERE email = ?";
                         try (PreparedStatement updateSt = conn.prepareStatement(updateSql)) {
-                            updateSt.setInt(1, userId);
+                            updateSt.setString(1, email.trim());
                             updateSt.executeUpdate();
                         }
                         
                         // Clear verification code for security
-                        String clearCodeSql = "UPDATE users SET verification_code = NULL WHERE id = ?";
+                        String clearCodeSql = "UPDATE users SET verification_code = NULL WHERE email = ?";
                         try (PreparedStatement clearSt = conn.prepareStatement(clearCodeSql)) {
-                            clearSt.setInt(1, userId);
+                            clearSt.setString(1, email.trim());
                             clearSt.executeUpdate();
                         }
                         
-                        // Create session and redirect to dashboard
+                        // Create session and redirect to login
                         HttpSession session = request.getSession();
                         session.setAttribute("user", username);
                         request.setAttribute("success", "Email verified successfully! You can now login.");
