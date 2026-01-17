@@ -5,9 +5,14 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.helloworld.util.VerificationCodeGenerator;
 import com.helloworld.util.EmailSender;
 import com.helloworld.util.PasswordHasher;
+import com.helloworld.util.EmailValidator;
+import com.helloworld.util.PhoneNumberValidator;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -43,8 +48,38 @@ public class RegisterServlet extends HttpServlet {
               return;
           }
 
-          // Generate 6-digit verification code
+          // Email validation
+          if(!EmailValidator.isValid(email)) {
+              request.setAttribute("error", "Invalid email address.");
+              request.getRequestDispatcher("/register.jsp").forward(request, response);
+              return;
+          }
+          // Phone validation
+          if(!PhoneNumberValidator.validatePhoneNumber(phone)) {
+              request.setAttribute("error", "Invalid phone number.");
+              request.getRequestDispatcher("/register.jsp").forward(request, response);
+              return;
+          }
+//          Check if the phone or email or username already exists
+          String checkSQL = "SELECT COUNT(*) WHERE phone=? OR email=? OR username=?";
+          try(Connection conn=DatabaseConnection.getConnection();PreparedStatement checkSmt=conn.prepareStatement(checkSQL)) {
+              checkSmt.setString(1, phone);
+              checkSmt.setString(2, email);
+              checkSmt.setString(3, username);
+              ResultSet rs=checkSmt.executeQuery();
+              rs.next();
+              int count =  rs.getInt(1);
+              if(count > 0) {
+                  request.setAttribute("error", "Username or email or phone number is already in use.");
+                  request.getRequestDispatcher("/register.jsp").forward(request, response);
+                  return;
+              }
+          } catch (SQLException e) {
+              throw new RuntimeException(e);
+          }
           String verificationCode = VerificationCodeGenerator.generateCode();
+
+
           
           // IMPORTANT: Update these column names to match your real database schema.
           // This version assumes your table has columns: fullname, password, email, phone, is_verified, verification_code
@@ -87,7 +122,7 @@ public class RegisterServlet extends HttpServlet {
                       // Still redirect to verification page
                       HttpSession session = request.getSession();
                       session.setAttribute("verificationEmail", email);
-                      request.setAttribute("warning", "Registration successful, but email could not be sent. Please contact support.");
+                      session.setAttribute("warning", "Registration successful, but email could not be sent. Please contact support.");
                       response.sendRedirect(request.getContextPath() + "/verifyCode?email=" + email);
                   }
               } else {
