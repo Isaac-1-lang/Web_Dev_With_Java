@@ -6,6 +6,7 @@ import jakarta.persistence.*;
  * A class which helps to create a model for the data for a student in the database table.
  */
 @Entity
+@Table (name = "students")
 public class Student {
     /**
      * @param id
