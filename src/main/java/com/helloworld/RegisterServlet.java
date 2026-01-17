@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import com.helloworld.util.VerificationCodeGenerator;
 import com.helloworld.util.EmailSender;
+import com.helloworld.util.PasswordHasher;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -48,6 +49,8 @@ public class RegisterServlet extends HttpServlet {
           // IMPORTANT: Update these column names to match your real database schema.
           // This version assumes your table has columns: fullname, password, email, phone, is_verified, verification_code
           // and that id is auto-generated (SERIAL/IDENTITY).
+        //   We need to hash the password before storing it in the database
+        String hashedPassword = PasswordHasher.hashPassword(password);
           String sql = "INSERT INTO users(fullname, password, email, phone, is_verified, verification_code) VALUES (?,?,?,?,?,?)";
 
           try (Connection conn = DatabaseConnection.getConnection();
@@ -55,7 +58,7 @@ public class RegisterServlet extends HttpServlet {
 
               // Set parameters BEFORE executing
               st.setString(1, username); // fullname (or username)
-              st.setString(2, password); // password (in real apps hash passwords!)
+              st.setString(2, hashedPassword); // password (in real apps hash passwords!)
               st.setString(3, email);
               st.setString(4, phone);
               st.setBoolean(5, false); // is_verified - set to false initially

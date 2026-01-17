@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import com.helloworld.util.PasswordHasher;
 
 
 /**
@@ -60,7 +61,7 @@ public class LoginServlet extends HttpServlet {
                  PreparedStatement st = conn.prepareStatement(sql)) {
 
                 st.setString(1, username);
-                st.setString(2, password);
+                st.setString(2, PasswordHasher.hashPassword(password));
 
                 try (ResultSet rs = st.executeQuery()) {   // executeQuery only here
                     if (rs.next()) {
