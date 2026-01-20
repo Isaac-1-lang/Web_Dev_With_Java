@@ -153,38 +153,10 @@
           ${error}
         </div>
       </c:if>
-
-      <!-- Add New Student Form -->
-      <div style="background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
-        <h3 style="margin-top: 0; margin-bottom: 20px;">Add New Student</h3>
-        <form method="POST" action="dashboard" style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
-          <div style="flex: 1; min-width: 180px;">
-            <label for="name" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Name</label>
-            <input type="text" id="name" name="name" required 
-                   style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
-          </div>
-          <div style="flex: 1; min-width: 220px;">
-            <label for="email" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Email</label>
-            <input type="email" id="email" name="email" required 
-                   style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
-          </div>
-          <div style="flex: 1; min-width: 180px;">
-            <label for="school" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">School</label>
-            <input type="text" id="school" name="school" required 
-                   style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
-          </div>
-          <div style="flex: 1; min-width: 180px;">
-            <label for="dob" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Date of Birth</label>
-            <input type="date" id="dob" name="dob" required 
-                   style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
-          </div>
-          <div>
-            <button type="submit" class="btn btn-edit" style="padding: 10px 20px; margin: 0;">Add Student</button>
-          </div>
-        </form>
-      </div>
-
       <!-- Table displaying the data from students table -->
+       <div style="margin-bottom: 20px;">
+       <a href="create-student.jsp" class="btn">Add New Student</a>
+       </div>
       <table class="data-table">
         <thead>
           <tr>
