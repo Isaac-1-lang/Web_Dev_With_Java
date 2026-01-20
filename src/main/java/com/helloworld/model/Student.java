@@ -1,6 +1,8 @@
 package com.helloworld.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.time.Period;
 
 /**
  * A class which helps to create a model for the data for a student in the database table.
@@ -24,28 +26,31 @@ public class Student {
     private String email;
     @Column(name="school",nullable = false,length = 100)
     private String school;
+    @Transient
     private int age;
+    @Column(name = "dob",nullable = false)
+    private LocalDate dob;
     public Student() {
 
     }
 
-    public Student(int id, String name, String email, String school, int age) {
+    public Student(String name, String email, String school, LocalDate dob) {
         super();
-        this.id = id;
         this.name = name;
         this.email = email;
         this.school = school;
-        this.age = age;
-    }
-    public Student(String name, String email, String school, int age) {
-        this.name = name;
-        this.email = email;
-        this.school = school;
-        this.age = age;
+        this.dob = dob;
+
     }
     @Override
     public String toString() {
-        return "Student [id=" + id + ", name=" + name + ", email=" + email + ", school=" + school + ", age=" + age + "]";
+        return "Student [id=" + id + ", name=" + name + ", email=" + email + ", school=" + school + ", age=" + getAge() + "]";
     }
-
+    @Transient
+    public int getAge() {
+        if(dob == null){
+            return 0;
+        }
+        return Period.between(dob,LocalDate.now()).getYears();
+    }
 }

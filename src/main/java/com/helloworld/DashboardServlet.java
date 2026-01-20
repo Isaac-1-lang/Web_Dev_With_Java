@@ -26,8 +26,6 @@ public class DashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // ========== READING SESSION DATA ==========
-        // Get existing session (false = don't create if doesn't exist)
         HttpSession session = request.getSession(false);
         
         // Check if session exists and has user attribute
@@ -80,15 +78,6 @@ public class DashboardServlet extends HttpServlet {
         // Store cookie data in request for JSP
         request.setAttribute("rememberedUsername", rememberedUsername);
         request.setAttribute("lastLogin", lastLogin);
-        
-        // ========== SESSION METHODS YOU CAN USE ==========
-        // session.getAttribute("key") - get value
-        // session.setAttribute("key", value) - set value
-        // session.removeAttribute("key") - remove value
-        // session.invalidate() - destroy entire session
-        // session.getMaxInactiveInterval() - get timeout in seconds
-        // session.setMaxInactiveInterval(seconds) - set timeout
-        // session.isNew() - check if session was just created
         
         // ========== READ CUSTOMERS ==========
         // Use CustomerService to retrieve all customers

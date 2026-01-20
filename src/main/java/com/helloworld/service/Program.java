@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.helloworld.model.Student;
 import com.helloworld.util.HibernateUtil;
-
+import java.time.LocalDate;
 public class Program {
 
     public static void main(String[] args) {
@@ -18,9 +18,9 @@ public class Program {
         // ---------- ADD STUDENTS ----------
         System.out.println("Adding students...");
 
-        service.addStudent(new Student("Alice", "alice@gmail.com", "RCA", 18));
-        service.addStudent(new Student("Bob", "bob@gmail.com", "RCA", 19));
-        service.addStudent(new Student("Chris", "chris@gmail.com", "KICS", 20));
+        service.addStudent(new Student("Alice", "alice@gmail.com", "RCA",LocalDate.of(2009, 1, 1)));
+        service.addStudent(new Student("Bob", "bob@gmail.com", "RCA",LocalDate.of(2008, 1, 1)));
+        service.addStudent(new Student("Chris", "chris@gmail.com", "KICS",LocalDate.of(2018, 1, 1)));
 
         System.out.println("Students added successfully.");
 
