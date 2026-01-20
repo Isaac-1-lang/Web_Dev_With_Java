@@ -40,6 +40,29 @@ public class StudentServices {
         }
     }
 
+    // ---------- UPDATE ----------
+
+    public void updateStudent(StudentModel student) {
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            session.merge(student);
+            session.getTransaction().commit();
+        }
+    }
+
+    // ---------- DELETE ----------
+
+    public void deleteStudent(int id) {
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            StudentModel existing = session.get(StudentModel.class, id);
+            if (existing != null) {
+                session.remove(existing);
+            }
+            session.getTransaction().commit();
+        }
+    }
+
     // ---------- READ EXAMPLES ----------
 
     // Just a demo: always returns student with id = 1
@@ -60,7 +83,7 @@ public class StudentServices {
     public List<StudentModel> listStudents() {
         try (Session session = sf.openSession()) {
             List<StudentModel> students =
-                    session.createQuery("select s from StudentModel", StudentModel.class)
+                    session.createQuery("select s from StudentModel s", StudentModel.class)
                             .getResultList();
             Hibernate.initialize(students);
             return students;
@@ -82,7 +105,7 @@ public class StudentServices {
 
     public List<StudentModel> getAll() {
         try (Session session = sf.openSession()) {
-            Query<StudentModel> q = session.createQuery("from Student", StudentModel.class);
+            Query<StudentModel> q = session.createQuery("from StudentModel", StudentModel.class);
             return q.getResultList();
         }
     }

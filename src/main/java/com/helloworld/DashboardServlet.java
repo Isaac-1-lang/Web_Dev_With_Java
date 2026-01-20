@@ -4,6 +4,8 @@ import com.helloworld.service.StudentServices;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import com.helloworld.model.StudentModel;
@@ -17,6 +19,9 @@ import com.helloworld.model.StudentModel;
  * @date 2026-01-08
  */
 public class DashboardServlet extends HttpServlet {
+
+    private static final String FLASH_SUCCESS = "flashSuccess";
+    private static final String FLASH_ERROR = "flashError";
 
     /**
      * Display dashboard - shows how to read session and cookie data
@@ -78,6 +83,18 @@ public class DashboardServlet extends HttpServlet {
         // Store cookie data in request for JSP
         request.setAttribute("rememberedUsername", rememberedUsername);
         request.setAttribute("lastLogin", lastLogin);
+
+        // Pull flash messages from session (if any)
+        String flashSuccess = (String) session.getAttribute(FLASH_SUCCESS);
+        String flashError = (String) session.getAttribute(FLASH_ERROR);
+        if (flashSuccess != null) {
+            request.setAttribute("success", flashSuccess);
+            session.removeAttribute(FLASH_SUCCESS);
+        }
+        if (flashError != null) {
+            request.setAttribute("error", flashError);
+            session.removeAttribute(FLASH_ERROR);
+        }
         
         // ========== READ Students ==========
         // Use StudentService to retrieve all students
@@ -104,133 +121,41 @@ public class DashboardServlet extends HttpServlet {
         }
         
         // Get form parameters
-        String fullName = request.getParameter("fullName");
-        String orderIdStr = request.getParameter("orderId");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String school = request.getParameter("school");
+        String dobStr = request.getParameter("dob");
         
         // Validate input
-        if (fullName == null || fullName.trim().isEmpty() || orderIdStr == null || orderIdStr.trim().isEmpty()) {
-            request.setAttribute("error", "Full name and Order ID are required");
-            doGet(request, response);
+        if (name == null || name.trim().isEmpty()
+                || email == null || email.trim().isEmpty()
+                || school == null || school.trim().isEmpty()
+                || dobStr == null || dobStr.trim().isEmpty()) {
+            session.setAttribute(FLASH_ERROR, "Name, email, school and date of birth are required");
+            response.sendRedirect("dashboard");
             return;
         }
         
         try {
-            int orderId = Integer.parseInt(orderIdStr);
-            
-            // Create customer model
-            StudentModel customer = new StudentModel();
-            customer.setFullName(fullName.trim());
-            customer.setOrder_id(orderId);
-            
-            // Use service to add customer
-            StudentService customerService = new StudentService();
-            boolean success = customerService.addCustomer(customer);
-            
-            if (success) {
-                request.setAttribute("success", "Customer added successfully");
-            } else {
-                request.setAttribute("error", "Failed to add customer");
-            }
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid Order ID format");
+            LocalDate dob = LocalDate.parse(dobStr.trim());
+
+            StudentModel student = new StudentModel();
+            student.setName(name.trim());
+            student.setEmail(email.trim());
+            student.setSchool(school.trim());
+            student.setDob(dob);
+
+            StudentServices studentService = new StudentServices();
+            studentService.addStudent(student);
+
+            session.setAttribute(FLASH_SUCCESS, "Student added successfully");
+        } catch (DateTimeParseException e) {
+            session.setAttribute(FLASH_ERROR, "Invalid date of birth format");
+        } catch (Exception e) {
+            session.setAttribute(FLASH_ERROR, "Failed to add student");
         }
         
-        // Redirect to GET to show updated list
-        doGet(request, response);
-    }
-    
-    /**
-     * Handle PUT requests - UPDATE existing customer
-     * Note: Most browsers don't support PUT directly, so this might be called via POST with _method=PUT
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     */
-    @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        // Check session
-        HttpSession session = request.getSession(false);
-        if(session == null || session.getAttribute("user") == null){
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-        
-        // Get form parameters
-        String idStr = request.getParameter("id");
-        String fullName = request.getParameter("fullName");
-        String orderIdStr = request.getParameter("orderId");
-        
-        // Validate input
-        if (idStr == null || fullName == null || fullName.trim().isEmpty() || orderIdStr == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing required parameters");
-            return;
-        }
-        
-        try {
-            int id = Integer.parseInt(idStr);
-            int orderId = Integer.parseInt(orderIdStr);
-            
-            // Create customer model
-            StudentModel customer = new StudentModel();
-            customer.setId(id);
-            customer.setFullName(fullName.trim());
-            customer.setOrder_id(orderId);
-            
-            // Use service to update customer
-            StudentService customerService = new StudentService();
-            boolean success = customerService.updateCustomer(customer);
-            
-            if (success) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write("Customer updated successfully");
-            } else {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update customer");
-            }
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID or Order ID format");
-        }
-    }
-    
-    /**
-     * Handle DELETE requests - DELETE customer
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     */
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        // Check session
-        HttpSession session = request.getSession(false);
-        if(session == null || session.getAttribute("user") == null){
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-        
-        // Get customer ID from parameter
-        String idStr = request.getParameter("id");
-        
-        if (idStr == null || idStr.trim().isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Customer ID is required");
-            return;
-        }
-        
-        try {
-            int id = Integer.parseInt(idStr);
-            
-            // Use service to delete customer
-            StudentService customerService = new StudentService();
-            boolean success = customerService.deleteCustomer(id);
-            
-            if (success) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write("Customer deleted successfully");
-            } else {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete customer");
-            }
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid customer ID format");
-        }
+        // PRG: redirect to GET
+        response.sendRedirect("dashboard");
     }
 }

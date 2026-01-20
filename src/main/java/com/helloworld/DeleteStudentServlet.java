@@ -4,16 +4,21 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
+import com.helloworld.service.StudentServices;
+
 /**
- * Servlet for deleting customers
+ * Servlet for deleting students
  * 
  * @author Isaac-1-lang
  * @version 1.0
  */
 public class DeleteStudentServlet extends HttpServlet {
 
+    private static final String FLASH_SUCCESS = "flashSuccess";
+    private static final String FLASH_ERROR = "flashError";
+
     /**
-     * Handle customer deletion
+     * Handle student deletion
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -26,11 +31,11 @@ public class DeleteStudentServlet extends HttpServlet {
             return;
         }
         
-        // Get customer ID from parameter
+        // Get student ID from parameter
         String idStr = request.getParameter("id");
         
         if (idStr == null || idStr.trim().isEmpty()) {
-            request.setAttribute("error", "Customer ID is required");
+            request.getSession().setAttribute(FLASH_ERROR, "Student ID is required");
             response.sendRedirect("dashboard");
             return;
         }
@@ -38,17 +43,13 @@ public class DeleteStudentServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(idStr);
             
-            // Use service to delete customer
-            StudentService customerService = new StudentService();
-            boolean success = customerService.deleteCustomer(id);
-            
-            if (success) {
-                request.setAttribute("success", "Customer deleted successfully");
-            } else {
-                request.setAttribute("error", "Failed to delete customer");
-            }
+            StudentServices studentService = new StudentServices();
+            studentService.deleteStudent(id);
+            request.getSession().setAttribute(FLASH_SUCCESS, "Student deleted successfully");
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid customer ID format");
+            request.getSession().setAttribute(FLASH_ERROR, "Invalid student ID format");
+        } catch (Exception e) {
+            request.getSession().setAttribute(FLASH_ERROR, "Failed to delete student");
         }
         
         // Redirect back to dashboard

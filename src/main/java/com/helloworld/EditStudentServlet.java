@@ -3,8 +3,11 @@ package com.helloworld;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import com.helloworld.model.StudentModel;
+import com.helloworld.service.StudentServices;
 
 /**
  * Servlet for editing customer information
@@ -15,8 +18,11 @@ import com.helloworld.model.StudentModel;
  */
 public class EditStudentServlet extends HttpServlet {
 
+    private static final String FLASH_SUCCESS = "flashSuccess";
+    private static final String FLASH_ERROR = "flashError";
+
     /**
-     * Display edit form with customer data
+     * Display edit form with student data
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,11 +35,11 @@ public class EditStudentServlet extends HttpServlet {
             return;
         }
         
-        // Get customer ID from parameter
+        // Get student ID from parameter
         String idStr = request.getParameter("id");
         
         if (idStr == null || idStr.trim().isEmpty()) {
-            request.setAttribute("error", "Customer ID is required");
+            request.setAttribute("error", "Student ID is required");
             response.sendRedirect("dashboard");
             return;
         }
@@ -41,28 +47,28 @@ public class EditStudentServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(idStr);
             
-            // Use service to get customer by ID
-            StudentService customerService = new StudentService();
-            StudentModel customer = customerService.getCustomerById(id);
+            // Use service to get student by ID
+            StudentServices studentService = new StudentServices();
+            StudentModel student = studentService.getStudentById(id);
             
-            if (customer == null) {
-                request.setAttribute("error", "Customer not found");
+            if (student == null) {
+                request.setAttribute("error", "Student not found");
                 response.sendRedirect("dashboard");
                 return;
             }
             
-            // Set customer data for edit form
-            request.setAttribute("customer", customer);
+            // Set student data for edit form
+            request.setAttribute("student", student);
             request.getRequestDispatcher("/edit-student.jsp").forward(request, response);
             
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid customer ID format");
+            request.setAttribute("error", "Invalid student ID format");
             response.sendRedirect("dashboard");
         }
     }
 
     /**
-     * Handle customer update
+     * Handle student update
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -77,11 +83,17 @@ public class EditStudentServlet extends HttpServlet {
         
         // Get form parameters
         String idStr = request.getParameter("id");
-        String fullName = request.getParameter("fullName");
-        String orderIdStr = request.getParameter("orderId");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String school = request.getParameter("school");
+        String dobStr = request.getParameter("dob");
         
         // Validate input
-        if (idStr == null || fullName == null || fullName.trim().isEmpty() || orderIdStr == null || orderIdStr.trim().isEmpty()) {
+        if (idStr == null
+                || name == null || name.trim().isEmpty()
+                || email == null || email.trim().isEmpty()
+                || school == null || school.trim().isEmpty()
+                || dobStr == null || dobStr.trim().isEmpty()) {
             request.setAttribute("error", "All fields are required");
             doGet(request, response);
             return;
@@ -89,28 +101,31 @@ public class EditStudentServlet extends HttpServlet {
         
         try {
             int id = Integer.parseInt(idStr);
-            int orderId = Integer.parseInt(orderIdStr);
+            LocalDate dob = LocalDate.parse(dobStr.trim());
             
-            // Create customer model with updated data
-            StudentModel customer = new StudentModel();
-            customer.setId(id);
-            customer.setFullName(fullName.trim());
-            customer.setOrder_id(orderId);
+            // Create student model with updated data
+            StudentModel student = new StudentModel();
+            student.setId(id);
+            student.setName(name.trim());
+            student.setEmail(email.trim());
+            student.setSchool(school.trim());
+            student.setDob(dob);
             
-            // Use service to update customer
-            StudentService customerService = new StudentService();
-            boolean success = customerService.updateCustomer(customer);
-            
-            if (success) {
-                request.setAttribute("success", "Customer updated successfully");
-                response.sendRedirect("dashboard");
-            } else {
-                request.setAttribute("error", "Failed to update customer");
-                doGet(request, response);
-            }
+            // Use service to update student
+            StudentServices studentService = new StudentServices();
+            studentService.updateStudent(student);
+
+            session.setAttribute(FLASH_SUCCESS, "Student updated successfully");
+            response.sendRedirect("dashboard");
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid ID or Order ID format");
+            request.setAttribute("error", "Invalid student ID format");
             doGet(request, response);
+        } catch (DateTimeParseException e) {
+            request.setAttribute("error", "Invalid date of birth format");
+            doGet(request, response);
+        } catch (Exception e) {
+            session.setAttribute(FLASH_ERROR, "Failed to update student");
+            response.sendRedirect("dashboard");
         }
     }
 }

@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
-import com.helloworld.model.Student;
+import com.helloworld.model.StudentModel;
 
 /**
  * Hibernate Util class is for connection to the Database either Mysql or PostgreSQL
@@ -28,7 +28,7 @@ public class HibernateUtil {
             configuration.setProperties(settings);
 
             // Entity class
-            configuration.addAnnotatedClass(Student.class);
+            configuration.addAnnotatedClass(StudentModel.class);
 
             ServiceRegistry serviceRegistry =
                     new StandardServiceRegistryBuilder()

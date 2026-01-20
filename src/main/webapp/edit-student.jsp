@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix='c' %>
 <html>
 <head>
-  <title>Edit Customer</title>
+  <title>Edit Student</title>
   <link rel="stylesheet" href="css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -93,7 +93,7 @@
 
 <body class="dashboard">
   <header class="dashboard-header">
-    <h2>Edit Customer</h2>
+    <h2>Edit Student</h2>
     <a href="dashboard" class="btn" style="width: auto; margin: 0;">Back to Dashboard</a>
   </header>
 
@@ -107,22 +107,32 @@
         <div class="alert alert-success">${success}</div>
       </c:if>
 
-      <c:if test="${not empty customer}">
+      <c:if test="${not empty student}">
         <form method="POST" action="edit">
-          <input type="hidden" name="id" value="${customer.id}">
+          <input type="hidden" name="id" value="${student.id}">
           
           <div class="form-group">
-            <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="fullName" value="${customer.fullName}" required>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="${student.name}" required>
           </div>
 
           <div class="form-group">
-            <label for="orderId">Order ID</label>
-            <input type="number" id="orderId" name="orderId" value="${customer.orderId}" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="${student.email}" required>
           </div>
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">Update Customer</button>
+            <label for="school">School</label>
+            <input type="text" id="school" name="school" value="${student.school}" required>
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" value="${student.dob}" required>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update Student</button>
             <a href="dashboard" class="btn btn-secondary">Cancel</a>
           </div>
         </form>

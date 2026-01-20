@@ -154,46 +154,62 @@
         </div>
       </c:if>
 
-      <!-- Add New Customer Form -->
+      <!-- Add New Student Form -->
       <div style="background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
         <h3 style="margin-top: 0; margin-bottom: 20px;">Add New Student</h3>
-        <form method="POST" action="dashboard" style="display: flex; gap: 10px; align-items: flex-end;">
-          <div style="flex: 1;">
-            <label for="fullName" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Full Name</label>
-            <input type="text" id="fullName" name="fullName" required 
+        <form method="POST" action="dashboard" style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 180px;">
+            <label for="name" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Name</label>
+            <input type="text" id="name" name="name" required 
                    style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
           </div>
-          <div style="flex: 1;">
-            <label for="orderId" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Order ID</label>
-            <input type="number" id="orderId" name="orderId" required 
+          <div style="flex: 1; min-width: 220px;">
+            <label for="email" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Email</label>
+            <input type="email" id="email" name="email" required 
+                   style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
+          </div>
+          <div style="flex: 1; min-width: 180px;">
+            <label for="school" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">School</label>
+            <input type="text" id="school" name="school" required 
+                   style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
+          </div>
+          <div style="flex: 1; min-width: 180px;">
+            <label for="dob" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required 
                    style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 15px; box-sizing: border-box;">
           </div>
           <div>
-            <button type="submit" class="btn btn-edit" style="padding: 10px 20px; margin: 0;">Add Customer</button>
+            <button type="submit" class="btn btn-edit" style="padding: 10px 20px; margin: 0;">Add Student</button>
           </div>
         </form>
       </div>
 
-      <!-- Table displaying the data from customer table -->
+      <!-- Table displaying the data from students table -->
       <table class="data-table">
         <thead>
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Class ID</th>
+            <th>Email</th>
+            <th>School</th>
+            <th>Age</th>
+            <th>DOB</th>
             <th>Actions</th>
           </tr>
         </thead>
       
         <tbody>
-          <c:forEach var="c" items="${customers}">
+          <c:forEach var="s" items="${students}">
             <tr>
-              <td>${c.id}</td>
-              <td>${c.fullName}</td>
-              <td>${c.orderId}</td>
+              <td>${s.id}</td>
+              <td>${s.name}</td>
+              <td>${s.email}</td>
+              <td>${s.school}</td>
+              <td>${s.age}</td>
+              <td>${s.dob}</td>
               <td class="actions">
-                <a href="edit?id=${c.id}" class="btn btn-edit">Edit</a>
-                <a href="delete?id=${c.id}" class="btn btn-delete">Delete</a>
+                <a href="edit?id=${s.id}" class="btn btn-edit">Edit</a>
+                <a href="delete?id=${s.id}" class="btn btn-delete">Delete</a>
               </td>
             </tr>
           </c:forEach>
