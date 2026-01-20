@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import com.helloworld.model.Student;
+import com.helloworld.model.StudentModel;
 import com.helloworld.util.HibernateUtil;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -27,12 +27,12 @@ public class StudentServices {
         return instance;
     }
 
-    private StudentServices() {
+    public StudentServices() {
     }
 
     // ---------- CREATE ----------
 
-    public void addStudent(Student student) {
+    public void addStudent(StudentModel student) {
         try (Session session = sf.openSession()) {
             session.beginTransaction();
             session.persist(student); // or session.save(student);
@@ -43,24 +43,24 @@ public class StudentServices {
     // ---------- READ EXAMPLES ----------
 
     // Just a demo: always returns student with id = 1
-    public Student listStudent() {
+    public StudentModel listStudent() {
         try (Session session = sf.openSession()) {
-            return session.get(Student.class, 1);
+            return session.get(StudentModel.class, 1);
         }
     }
 
     @Transactional
-    public List<Student> getAllData() {
+    public List<StudentModel> getAllData() {
         try (Session session = sf.openSession()) {
-            Query<Student> q = session.createQuery("from Student", Student.class);
+            Query<StudentModel> q = session.createQuery("from StudentModel", StudentModel.class);
             return q.getResultList();
         }
     }
 
-    public List<Student> listStudents() {
+    public List<StudentModel> listStudents() {
         try (Session session = sf.openSession()) {
-            List<Student> students =
-                    session.createQuery("select s from Student s", Student.class)
+            List<StudentModel> students =
+                    session.createQuery("select s from StudentModel", StudentModel.class)
                             .getResultList();
             Hibernate.initialize(students);
             return students;
@@ -68,28 +68,28 @@ public class StudentServices {
     }
 
     //  Criteria API version
-    public List<Student> findAllStudents() {
+    public List<StudentModel> findAllStudents() {
         try (Session session = sf.openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Student> cq = cb.createQuery(Student.class);
-            Root<Student> root = cq.from(Student.class);
+            CriteriaQuery<StudentModel> cq = cb.createQuery(StudentModel.class);
+            Root<StudentModel> root = cq.from(StudentModel.class);
             cq.select(root); // SELECT s FROM Student s
 
-            Query<Student> query = session.createQuery(cq);
+            Query<StudentModel> query = session.createQuery(cq);
             return query.getResultList();
         }
     }
 
-    public List<Student> getAll() {
+    public List<StudentModel> getAll() {
         try (Session session = sf.openSession()) {
-            Query<Student> q = session.createQuery("from Student", Student.class);
+            Query<StudentModel> q = session.createQuery("from Student", StudentModel.class);
             return q.getResultList();
         }
     }
 
-    public Student getStudentById(int id) {
+    public StudentModel getStudentById(int id) {
         try (Session session = sf.openSession()) {
-            Student student = session.get(Student.class, id); // load(...) is LAZY
+            StudentModel student = session.get(StudentModel.class, id); // load(...) is LAZY
             Hibernate.initialize(student); // ensure initialized before session closes
             return student;
         }

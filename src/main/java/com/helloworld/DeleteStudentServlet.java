@@ -4,15 +4,13 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-import com.helloworld.service.CustomerService;
-
 /**
  * Servlet for deleting customers
  * 
  * @author Isaac-1-lang
  * @version 1.0
  */
-public class DeleteCustomerServlet extends HttpServlet {
+public class DeleteStudentServlet extends HttpServlet {
 
     /**
      * Handle customer deletion
@@ -41,7 +39,7 @@ public class DeleteCustomerServlet extends HttpServlet {
             int id = Integer.parseInt(idStr);
             
             // Use service to delete customer
-            CustomerService customerService = new CustomerService();
+            StudentService customerService = new StudentService();
             boolean success = customerService.deleteCustomer(id);
             
             if (success) {

@@ -4,8 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-import com.helloworld.model.CustomerModel;
-import com.helloworld.service.CustomerService;
+import com.helloworld.model.StudentModel;
 
 /**
  * Servlet for editing customer information
@@ -14,7 +13,7 @@ import com.helloworld.service.CustomerService;
  * @author Isaac-1-lang
  * @version 1.0
  */
-public class EditCustomerServlet extends HttpServlet {
+public class EditStudentServlet extends HttpServlet {
 
     /**
      * Display edit form with customer data
@@ -43,8 +42,8 @@ public class EditCustomerServlet extends HttpServlet {
             int id = Integer.parseInt(idStr);
             
             // Use service to get customer by ID
-            CustomerService customerService = new CustomerService();
-            CustomerModel customer = customerService.getCustomerById(id);
+            StudentService customerService = new StudentService();
+            StudentModel customer = customerService.getCustomerById(id);
             
             if (customer == null) {
                 request.setAttribute("error", "Customer not found");
@@ -54,7 +53,7 @@ public class EditCustomerServlet extends HttpServlet {
             
             // Set customer data for edit form
             request.setAttribute("customer", customer);
-            request.getRequestDispatcher("/edit-customer.jsp").forward(request, response);
+            request.getRequestDispatcher("/edit-student.jsp").forward(request, response);
             
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid customer ID format");
@@ -93,13 +92,13 @@ public class EditCustomerServlet extends HttpServlet {
             int orderId = Integer.parseInt(orderIdStr);
             
             // Create customer model with updated data
-            CustomerModel customer = new CustomerModel();
+            StudentModel customer = new StudentModel();
             customer.setId(id);
             customer.setFullName(fullName.trim());
             customer.setOrder_id(orderId);
             
             // Use service to update customer
-            CustomerService customerService = new CustomerService();
+            StudentService customerService = new StudentService();
             boolean success = customerService.updateCustomer(customer);
             
             if (success) {

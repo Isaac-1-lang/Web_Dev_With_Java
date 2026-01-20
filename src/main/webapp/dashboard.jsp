@@ -156,7 +156,7 @@
 
       <!-- Add New Customer Form -->
       <div style="background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
-        <h3 style="margin-top: 0; margin-bottom: 20px;">Add New Customer</h3>
+        <h3 style="margin-top: 0; margin-bottom: 20px;">Add New Student</h3>
         <form method="POST" action="dashboard" style="display: flex; gap: 10px; align-items: flex-end;">
           <div style="flex: 1;">
             <label for="fullName" style="display: block; margin-bottom: 5px; font-weight: 600; color: #334155;">Full Name</label>
@@ -180,7 +180,7 @@
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Order ID</th>
+            <th>Class ID</th>
             <th>Actions</th>
           </tr>
         </thead>

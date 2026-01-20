@@ -1,12 +1,12 @@
 package com.helloworld;
 
+import com.helloworld.service.StudentServices;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-import com.helloworld.model.CustomerModel;
-import com.helloworld.service.CustomerService;
+import com.helloworld.model.StudentModel;
 
 /**
  * Servlet implementation class DashboardServlet
@@ -79,16 +79,16 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("rememberedUsername", rememberedUsername);
         request.setAttribute("lastLogin", lastLogin);
         
-        // ========== READ CUSTOMERS ==========
-        // Use CustomerService to retrieve all customers
-        CustomerService customerService = new CustomerService();
-        List<CustomerModel> customers = customerService.getAllCustomers();
-        request.setAttribute("customers", customers);
+        // ========== READ Students ==========
+        // Use StudentService to retrieve all students
+        StudentServices studentService = new StudentServices();
+        List<StudentModel> students = studentService.getAll();
+        request.setAttribute("students", students);
         
         request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
     }
     /**
-     * Handle POST requests - CREATE new customer
+     * Handle POST requests - CREATE new student
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
@@ -118,12 +118,12 @@ public class DashboardServlet extends HttpServlet {
             int orderId = Integer.parseInt(orderIdStr);
             
             // Create customer model
-            CustomerModel customer = new CustomerModel();
+            StudentModel customer = new StudentModel();
             customer.setFullName(fullName.trim());
             customer.setOrder_id(orderId);
             
             // Use service to add customer
-            CustomerService customerService = new CustomerService();
+            StudentService customerService = new StudentService();
             boolean success = customerService.addCustomer(customer);
             
             if (success) {
@@ -172,13 +172,13 @@ public class DashboardServlet extends HttpServlet {
             int orderId = Integer.parseInt(orderIdStr);
             
             // Create customer model
-            CustomerModel customer = new CustomerModel();
+            StudentModel customer = new StudentModel();
             customer.setId(id);
             customer.setFullName(fullName.trim());
             customer.setOrder_id(orderId);
             
             // Use service to update customer
-            CustomerService customerService = new CustomerService();
+            StudentService customerService = new StudentService();
             boolean success = customerService.updateCustomer(customer);
             
             if (success) {
@@ -220,7 +220,7 @@ public class DashboardServlet extends HttpServlet {
             int id = Integer.parseInt(idStr);
             
             // Use service to delete customer
-            CustomerService customerService = new CustomerService();
+            StudentService customerService = new StudentService();
             boolean success = customerService.deleteCustomer(id);
             
             if (success) {

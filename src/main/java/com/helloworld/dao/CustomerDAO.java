@@ -1,16 +1,16 @@
 package com.helloworld.dao;
 
-import com.helloworld.model.CustomerModel;
+import com.helloworld.model.StudentModel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import com.helloworld.DatabaseConnection;
 
-public class CustomerDAO {
+public class ustomerDAO {
 
     // ===== READ ALL =====
-    public List<CustomerModel> getAllCustomers() throws SQLException {
-        List<CustomerModel> customers = new ArrayList<>();
+    public List<StudentModel> getAllCustomers() throws SQLException {
+        List<StudentModel> customers = new ArrayList<>();
         String sql = "SELECT Id, Fullname, Order_Id FROM customers";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -18,7 +18,7 @@ public class CustomerDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                CustomerModel c = new CustomerModel();
+                StudentModel c = new StudentModel();
                 c.setId(rs.getInt("Id"));
                 c.setFullName(rs.getString("Fullname"));
                 c.setOrder_id(rs.getInt("Order_Id"));
@@ -30,7 +30,7 @@ public class CustomerDAO {
     }
 
     // ===== ADD / CREATE =====
-    public void addCustomer(CustomerModel c) throws SQLException {
+    public void addCustomer(StudentModel c) throws SQLException {
         String sql = "INSERT INTO customers (Fullname, Order_Id) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -42,7 +42,7 @@ public class CustomerDAO {
     }
 
     // ===== UPDATE =====
-    public void updateCustomer(CustomerModel c) throws SQLException {
+    public void updateCustomer(StudentModel c) throws SQLException {
         String sql = "UPDATE customers SET Fullname=?, Order_Id=? WHERE Id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -66,9 +66,9 @@ public class CustomerDAO {
     }
 
     // ===== READ BY ID =====
-    public CustomerModel getCustomerById(int id) throws SQLException {
+    public StudentModel getCustomerById(int id) throws SQLException {
         String sql = "SELECT Id, Fullname, Order_Id FROM customers WHERE Id=?";
-        CustomerModel c = null;
+        StudentModel c = null;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -76,7 +76,7 @@ public class CustomerDAO {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    c = new CustomerModel();
+                    c = new StudentModel();
                     c.setId(rs.getInt("Id"));
                     c.setFullName(rs.getString("Fullname"));
                     c.setOrder_id(rs.getInt("Order_Id"));

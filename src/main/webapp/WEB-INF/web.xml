@@ -13,8 +13,6 @@
         <servlet-name>Helloworld</servlet-name>
         <url-pattern>/hello</url-pattern>
     </servlet-mapping>
-
-
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>com.helloworld.LoginServlet</servlet-class>
@@ -57,7 +55,7 @@
 
     <servlet>
         <servlet-name>EditCustomer</servlet-name>
-        <servlet-class>com.helloworld.EditCustomerServlet</servlet-class>
+        <servlet-class>com.helloworld.EditStudentServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -67,7 +65,7 @@
 
     <servlet>
         <servlet-name>DeleteCustomer</servlet-name>
-        <servlet-class>com.helloworld.DeleteCustomerServlet</servlet-class>
+        <servlet-class>com.helloworld.DeleteStudentServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
