@@ -61,16 +61,17 @@ public class RegisterServlet extends HttpServlet {
               return;
           }
 //          Check if the phone or email or username already exists
-          String checkSQL = "SELECT COUNT(*) WHERE phone=? OR email=? OR username=?";
-          try(Connection conn=DatabaseConnection.getConnection();PreparedStatement checkSmt=conn.prepareStatement(checkSQL)) {
+          String checkSQL = "SELECT COUNT(*) FROM users WHERE phone = ? OR email = ? OR fullname = ?";
+          try (Connection conn = DatabaseConnection.getConnection();
+               PreparedStatement checkSmt = conn.prepareStatement(checkSQL)) {
               checkSmt.setString(1, phone);
               checkSmt.setString(2, email);
-              checkSmt.setString(3, username);
-              ResultSet rs=checkSmt.executeQuery();
+              checkSmt.setString(3, username); // maps to fullname column
+              ResultSet rs = checkSmt.executeQuery();
               rs.next();
-              int count =  rs.getInt(1);
-              if(count > 0) {
-                  request.setAttribute("error", "Username or email or phone number is already in use.");
+              int count = rs.getInt(1);
+              if (count > 0) {
+                  request.setAttribute("error", "Username, email, or phone number is already in use.");
                   request.getRequestDispatcher("/register.jsp").forward(request, response);
                   return;
               }

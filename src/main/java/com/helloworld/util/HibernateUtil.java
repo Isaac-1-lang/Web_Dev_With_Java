@@ -2,6 +2,8 @@ package com.helloworld.util;
 
 import java.util.Properties;
 
+import com.helloworld.model.CombinationModel;
+import com.helloworld.model.TeacherModel;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -29,6 +31,8 @@ public class HibernateUtil {
 
             // Entity class
             configuration.addAnnotatedClass(StudentModel.class);
+            configuration.addAnnotatedClass(TeacherModel.class);
+            configuration.addAnnotatedClass(CombinationModel.class);
 
             ServiceRegistry serviceRegistry =
                     new StandardServiceRegistryBuilder()
