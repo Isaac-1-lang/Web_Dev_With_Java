@@ -13,7 +13,7 @@ import org.hibernate.service.ServiceRegistry;
 import com.helloworld.model.StudentModel;
 
 /**
- * Hibernate Util class is for connection to the Database either Mysql or PostgreSQL
+ * Hibernate Util class is for connection to the Database either PostgreSQL
  */
 
 public class HibernateUtil {
