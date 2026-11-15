@@ -5,7 +5,6 @@
       "label": "eslint-check",
       "type": "shell",
       "command": "node",
-      "args": ["./src/main/java/com/helloworld/helloworld/public/fonts/fa-solid-600.ttf"],
       "problemMatcher": [],
       "isBackground": true,
       "hide": true,
